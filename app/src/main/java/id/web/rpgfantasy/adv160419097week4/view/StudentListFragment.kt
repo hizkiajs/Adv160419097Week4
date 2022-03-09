@@ -36,7 +36,6 @@ class StudentListFragment : Fragment() {
         recView.adapter = studentListAdapter
 
         observeViewModel()
-
     }
 
     private fun observeViewModel() {
