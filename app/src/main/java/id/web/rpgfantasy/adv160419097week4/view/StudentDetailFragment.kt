@@ -1,17 +1,22 @@
 package id.web.rpgfantasy.adv160419097week4.view
 
 import android.os.Bundle
+import android.support.v4.media.session.MediaSessionCompat.Token.fromBundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.Person.fromBundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.media.AudioAttributesCompat.fromBundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.web.rpgfantasy.adv160419097week4.R
+import id.web.rpgfantasy.adv160419097week4.util.loadImage
 import id.web.rpgfantasy.adv160419097week4.viewmodel.DetailViewModel
 import id.web.rpgfantasy.adv160419097week4.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_student_detail.*
 import kotlinx.android.synthetic.main.fragment_student_list.*
+import kotlinx.android.synthetic.main.student_list_item.*
 
 /**
  * A simple [Fragment] subclass.
@@ -30,8 +35,13 @@ class StudentDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var id = ""
+        arguments?.let {
+            id = StudentDetailFragmentArgs.fromBundle(requireArguments()).id
+        }
+
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        viewModel.fetch()
+        viewModel.fetch(id)
 
         observeViewModel()
     }
@@ -41,6 +51,7 @@ class StudentDetailFragment : Fragment() {
             editID.setText(it.id)
             editName.setText(it.name)
             editDate.setText(it.dob)
+            imgStudentDetailPhoto.loadImage(it.photoUrl, progressLoadingDetailPhoto)
             editPhone.setText(it.phone)
         }
     }

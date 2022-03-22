@@ -7,6 +7,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import id.web.rpgfantasy.adv160419097week4.R
 import id.web.rpgfantasy.adv160419097week4.model.Student
+import id.web.rpgfantasy.adv160419097week4.util.loadImage
 import kotlinx.android.synthetic.main.student_list_item.view.*
 
 class StudentListAdapter(val studentList:ArrayList<Student>):
@@ -25,9 +26,10 @@ class StudentListAdapter(val studentList:ArrayList<Student>):
             txtID.text = student.id.toString()
             txtName.text = student.name.toString()
             btnDetail.setOnClickListener {
-                val action = StudentListFragmentDirections.actionStudentDetail()
+                val action = StudentListFragmentDirections.actionStudentDetail(student.id.toString())
                 Navigation.findNavController(it).navigate(action)
             }
+            imgStudentPhoto.loadImage(student.photoUrl, progressLoadingStudentPhoto)
         }
     }
 
