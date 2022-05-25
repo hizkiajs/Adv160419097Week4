@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import id.web.rpgfantasy.adv160419097week4.R
+import id.web.rpgfantasy.adv160419097week4.databinding.StudentListItemBinding
 import id.web.rpgfantasy.adv160419097week4.model.Student
 import id.web.rpgfantasy.adv160419097week4.util.loadImage
 import kotlinx.android.synthetic.main.student_list_item.view.*
@@ -16,12 +17,18 @@ class StudentListAdapter(val studentList:ArrayList<Student>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.student_list_item, parent, false)
+        val view = StudentListItemBinding.inflate(inflater, parent, false)
+        //view = DataBindingUtil.inflate(inflater, R.layout.student_list_item, parent, false)
         return StudentViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
-        val student = studentList[position]
+        with(holder.view) {
+            student = studentList[position]
+            detailListener = this@StudentListAdapter
+        }
+
+        /*val student = studentList[position]
         with(holder.view){
             txtID.text = student.id.toString()
             txtName.text = student.name.toString()
@@ -30,7 +37,7 @@ class StudentListAdapter(val studentList:ArrayList<Student>):
                 Navigation.findNavController(it).navigate(action)
             }
             imgStudentPhoto.loadImage(student.photoUrl, progressLoadingStudentPhoto)
-        }
+        }*/
     }
 
     override fun getItemCount() = studentList.size
@@ -40,5 +47,10 @@ class StudentListAdapter(val studentList:ArrayList<Student>):
         studentList.clear()
         studentList.addAll(newStudentList)
         notifyDataSetChanged()
+    }
+
+    override fun onStudentDetailClick(view: View) {
+        val action = StudentListFragmentDirections.actionStudentDetail(view.tag.toString())
+        Navigation.findNavController(view).navigate(action)
     }
 }
